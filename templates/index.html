@@ -12,13 +12,15 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background: radial-gradient(ellipse at top left, #dce9df, transparent 65%), #f4f1e9;
+            color: #203b36;
+            font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
         }
         .site-header {
             background: rgba(255, 255, 255, 0.97);
-            border-bottom: 1px solid rgba(30, 60, 114, 0.12);
-            box-shadow: 0 4px 20px rgba(10, 30, 65, 0.12);
+            border-bottom: 1px solid rgba(32, 59, 54, 0.12);
+            box-shadow: 0 4px 20px rgba(32, 59, 54, 0.1);
         }
         .site-navbar {
             max-width: 1080px;
@@ -34,7 +36,7 @@
             align-items: center;
             gap: 12px;
             margin: 0;
-            color: #1e3c72;
+            color: #184b40;
             text-decoration: none;
         }
         .brand-logo {
@@ -44,7 +46,7 @@
             padding: 10px;
             border-radius: 14px;
             color: #fff;
-            background: #1e3c72;
+            background: #184b40;
         }
         .brand-name {
             display: block;
@@ -56,7 +58,7 @@
         .brand-description {
             display: block;
             margin-top: 3px;
-            color: #53647c;
+            color: #64766f;
             font-size: 0.78rem;
             letter-spacing: 0.02em;
         }
@@ -72,7 +74,7 @@
             display: block;
             padding: 10px 16px;
             border-radius: 10px;
-            color: #435570;
+            color: #3d554f;
             font-size: 0.9rem;
             font-weight: 600;
             text-align: center;
@@ -80,11 +82,11 @@
         }
         .navbar-link:hover,
         .navbar-link[aria-current="page"] {
-            color: #1e3c72;
-            background: #e8eef8;
+            color: #184b40;
+            background: #e7f0e8;
         }
         .site-navbar a:focus-visible {
-            outline: 3px solid #2a5298;
+            outline: 3px solid #216354;
             outline-offset: 4px;
         }
         .page-content {
@@ -96,15 +98,82 @@
         }
         .converter-card {
             width: 100%;
-            max-width: 400px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.95);
+            max-width: 460px;
+            padding: clamp(1.25rem, 5vw, 2.5rem);
+            border: 1px solid #d4ded5;
+            border-radius: 24px;
+            background: #fffdf8;
+            box-shadow: 0 20px 60px rgba(32, 59, 54, 0.1);
+        }
+        h1 {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(1.8rem, 7vw, 2.4rem);
+            font-weight: 400;
+            line-height: 1.15;
+            letter-spacing: -0.035em;
+        }
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .form-control, .form-select {
+            min-height: 48px;
+            border-color: #b5c6bd;
+            border-radius: 10px;
+            background-color: #fffefa;
+            color: #203b36;
+            font-size: 1rem;
+        }
+        .form-control::placeholder {
+            color: #64766f;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #216354;
+            box-shadow: 0 0 0 0.25rem rgba(33, 99, 84, 0.18);
+        }
+        .currency-fields {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+            align-items: end;
+            gap: 0.75rem;
+        }
+        .currency-arrow {
+            display: grid;
+            min-height: 48px;
+            place-items: center;
+            color: #64766f;
+        }
+        .btn-primary {
+            min-height: 52px;
+            border-radius: 10px;
+            font-weight: 600;
+            --bs-btn-bg: #216354;
+            --bs-btn-border-color: #216354;
+            --bs-btn-hover-bg: #184b40;
+            --bs-btn-hover-border-color: #184b40;
+            --bs-btn-active-bg: #123e34;
+            --bs-btn-active-border-color: #123e34;
+            --bs-btn-focus-shadow-rgb: 33, 99, 84;
         }
         .result-box {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #198754;
+            padding: 1rem;
+            border-radius: 12px;
+            background: #e7f0e8;
+            color: #184b40;
+            font-size: clamp(1.25rem, 5vw, 1.5rem);
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            overflow-wrap: anywhere;
+        }
+        @media (max-width: 360px) {
+            .currency-fields {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 0.25rem;
+            }
+            .currency-arrow {
+                min-height: 28px;
+                transform: rotate(90deg);
+            }
         }
         @media (max-width: 575px) {
             .site-navbar {
@@ -146,30 +215,32 @@
     </header>
 
     <main class="page-content" id="conversor">
-        <div class="card shadow-lg p-4 converter-card">
-            <h2 class="text-center mb-4">💱 Conversor de Divisas</h2>
+        <div class="card converter-card">
+            <h1 class="text-center mb-4">Conversor de Divisas</h1>
 
             <form method="post">
                 <div class="mb-3">
-                    <label class="form-label">Cantidad</label>
-                    <input type="number" step="0.01" name="amount"
+                    <label for="amount" class="form-label">Cantidad</label>
+                    <input id="amount" type="number" step="0.01" name="amount"
                            class="form-control form-control-lg"
                            placeholder="Introduce cantidad" required>
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col">
-                        <select name="from_currency" class="form-select">
+                <div class="currency-fields mb-4">
+                    <div>
+                        <label for="from_currency" class="form-label">De</label>
+                        <select id="from_currency" name="from_currency" class="form-select">
                             <option value="EUR">EUR €</option>
                             <option value="USD">USD $</option>
                             <option value="GBP">GBP £</option>
                         </select>
                     </div>
-                    <div class="col text-center align-self-center">
+                    <div class="currency-arrow" aria-hidden="true">
                         →
                     </div>
-                    <div class="col">
-                        <select name="to_currency" class="form-select">
+                    <div>
+                        <label for="to_currency" class="form-label">A</label>
+                        <select id="to_currency" name="to_currency" class="form-select">
                             <option value="USD">USD $</option>
                             <option value="EUR">EUR €</option>
                             <option value="GBP">GBP £</option>
@@ -185,7 +256,7 @@
             </form>
 
             {% if result is not none %}
-                <div class="mt-4 text-center result-box">
+                <div class="mt-4 text-center result-box" role="status">
                     {{ result }}
                 </div>
             {% endif %}
